@@ -4,16 +4,22 @@ using System.Threading;
 
 public class Controller : MonoBehaviour
 {
+    // Having data sent and recieved in a seperate thread to the main game thread stops unity from freezing
     Thread IOThread = new Thread(DataThread);
     private static SerialPort sp;
+    // Stores any data that comes in via the serial port
     private static string incomingMsg = "";
+    // Stores the data to be sent to the arduino via the serial port
     private static string outgoingMsg = "";
 
     private static void DataThread()
     {
-        sp = new SerialPort("COM5", 9600);
+        // Opens the serial port for reading and writing data
+        sp = new SerialPort("COM5", 9600); // Alter the first value to be whatever port the arduino is connected to within the arduino IDE; Alter the second value to be the same as Serial.beign at the start of the arduino program
         sp.Open();
 
+        // Every 200ms, it checks if there is a message stores in the output buffer string to be sent to the arduino,
+        // Then recieves any data being sent to the project via the arduino 
         while(true)
         {
             if (outgoingMsg != "")
@@ -29,6 +35,7 @@ public class Controller : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Closes the thread and serial port when the game ends
         IOThread.Abort();
         sp.Close();
     }
