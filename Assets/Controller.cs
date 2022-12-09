@@ -6,7 +6,10 @@ public class Controller : MonoBehaviour
 {
     // Having data sent and recieved in a seperate thread to the main game thread stops unity from freezing
     Thread IOThread = new Thread(DataThread);
-    private static SerialPort sp;
+    private static SerialPort sp; 
+    // If the serial port class does not exist open your NuGet package manager Project->Manage NuGet Packages->Browse and search for
+    // Serial Port. Install System.IO.Ports by Microsoft
+    
     // Stores any data that comes in via the serial port
     private static string incomingMsg = "";
     // Stores the data to be sent to the arduino via the serial port
